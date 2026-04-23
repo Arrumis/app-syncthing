@@ -1,0 +1,10 @@
+data/*
+!data/.gitkeep
+!data/config/
+!data/config/.gitkeep
+!data/storage/
+!data/storage/.gitkeep
+.env
+.env.local
+.DS_Store
+

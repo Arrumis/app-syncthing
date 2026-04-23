@@ -1,0 +1,24 @@
+services:
+  syncthing:
+    image: syncthing/syncthing:latest
+    restart: unless-stopped
+    hostname: "${HOSTNAME:-my-syncthing}"
+    environment:
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
+      TZ: "${TZ:-Asia/Tokyo}"
+    volumes:
+      - "${HOST_DATA_DIR:-./data}/config:/var/syncthing/config"
+      - "${HOST_DATA_DIR:-./data}/storage:/var/syncthing"
+    ports:
+      - "${WEB_UI_PORT:-8384}:8384"
+      - target: 22000
+        published: "${SYNC_TCP_PORT:-22000}"
+        protocol: tcp
+        mode: host
+      - target: 22000
+        published: "${SYNC_UDP_PORT:-22000}"
+        protocol: udp
+        mode: host
+      - "${DISCOVERY_PORT:-21027}:21027/udp"
+
