@@ -15,6 +15,9 @@ GitHub のコミット一覧が英語で分かりにくい場合は、[コミッ
 - `WEB_UI_PORT` や同期ポートは、他サービスと衝突するときだけ変更します
 - 親 repo からまとめて使う場合は、`stack.service.env.local` の `GLOBAL__HOST_DATA_ROOT` や `APP_SYNCTHING__...` を使います
 
+データ配置は旧コンテナと同じ `config` / `data` を標準にしています。
+HDD移行で `sync` ディレクトリをそのまま使う場合は、`HOST_DATA_DIR=/path/to/sync` とします。
+
 ## 起動
 
 ```bash
@@ -40,7 +43,7 @@ Git に含めないもの:
 
 - `.env.local`
 - `data/config/`
-- `data/storage/`
+- `data/data/`
 
 ## データ初期化
 

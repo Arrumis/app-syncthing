@@ -9,7 +9,7 @@ services:
       TZ: "${TZ:-Asia/Tokyo}"
     volumes:
       - "${SYNCTHING_CONFIG_DIR:-${HOST_DATA_DIR:-./data}/config}:/var/syncthing/config"
-      - "${SYNCTHING_STORAGE_DIR:-${HOST_DATA_DIR:-./data}/storage}:/var/syncthing"
+      - "${SYNCTHING_STORAGE_DIR:-${HOST_DATA_DIR:-./data}/data}:/var/syncthing"
     ports:
       - "${WEB_UI_PORT:-8384}:8384"
       - target: 22000
