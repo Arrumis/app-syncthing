@@ -1,24 +1,9 @@
 # app-syncthing
 
-Syncthing を独立リポジトリとして扱うための新しい正本候補です。旧 installer のテンプレート展開ではなく、repo 単独で起動できる形に寄せています。
+Syncthing を Docker で動かすためのリポジトリです。
+設定と同期データを指定した保存先へ置けるため、パソコンを変えても同じ形で使えます。
 
-## 日本語メモ
-
-GitHub のコミット一覧が英語で分かりにくい場合は、[コミット履歴の日本語メモ](docs/COMMIT_HISTORY_JA.md) を見てください。
-
-## サンプル値の置き換え
-
-`.env.example` は公開用の見本です。実際に使う値は `.env.local` に書きます。
-
-- `HOST_DATA_DIR` は Syncthing の設定と同期データを置く場所へ変更します
-- `HOSTNAME` は Syncthing の画面で見分けやすい名前へ変更できます
-- `WEB_UI_PORT` や同期ポートは、他サービスと衝突するときだけ変更します
-- 親 repo からまとめて使う場合は、`stack.service.env.local` の `GLOBAL__HOST_DATA_ROOT` や `APP_SYNCTHING__...` を使います
-
-データ配置は旧コンテナと同じ `config` / `data` を標準にしています。
-HDD移行で `sync` ディレクトリをそのまま使う場合は、`HOST_DATA_DIR=/path/to/sync` とします。
-
-## 起動
+## 使い方
 
 ```bash
 cp .env.example .env.local
@@ -26,33 +11,37 @@ cp .env.example .env.local
 docker compose --env-file .env.local up -d
 ```
 
-ブラウザ:
+ブラウザで開く画面:
 
-- Web UI: `http://localhost:8384`
+- `http://localhost:8384`
 
-## 管理対象
+## 変更する値
 
-Git に含めるもの:
+`.env.example` は公開用の見本です。実際の値は `.env.local` に書きます。
+
+- `HOST_DATA_DIR`: Syncthing の設定と同期データを置く場所です。
+- `HOSTNAME`: Syncthing の画面に出る名前です。
+- `WEB_UI_PORT`: 管理画面の公開ポートです。他サービスと重なるときだけ変えます。
+- `APP_SYNCTHING__...`: 親リポジトリからまとめて設定するときに使います。
+
+## データ
+
+GitHub に上げるもの:
 
 - `compose.yaml`
 - `.env.example`
 - `scripts/`
 - `README.md`
 
-Git に含めないもの:
+GitHub に上げないもの:
 
 - `.env.local`
 - `data/config/`
-- `data/data/`
+- `data/storage/`
 
-## データ初期化
-
-```bash
-./scripts/init-data-dirs.sh
-```
+既存環境から移す場合は、旧 `sync` ディレクトリを `HOST_DATA_DIR` に指定します。
 
 ## 補足
 
-- 旧構成の external network / 固定 IP はベース compose から外しています
-- reverse proxy 連携が必要なら別 override file で追加する方針です
-- 初回起動後の GUI 設定は Syncthing 側で行います
+- 初回起動後の共有フォルダや相手端末の設定は、Syncthing の画面で行います。
+- リバースプロキシ連携は親リポジトリ側の設定で扱います。
